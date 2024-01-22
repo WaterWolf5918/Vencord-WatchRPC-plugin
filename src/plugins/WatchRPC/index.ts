@@ -58,8 +58,17 @@ async function getApplicationAsset(key: string): Promise<string> {
 // copyed from plugin customRPC \\
 
 
-async function main() {
+function webSocketHandler() {
+    // This will only be called after when get a pong from localhost
     const webSocket = new WebSocket("ws://localhost:9494");
+    webSocket.onclose = event => {
+        connectionStarter();
+    };
+
+    webSocket.onerror = event => {
+        console.log(event);
+    };
+
     webSocket.onmessage = async event => {
         const json = JSON.parse(event.data);
         switch (json.event) {
@@ -84,14 +93,33 @@ async function main() {
                     socketId: "CustomRPC",
                 });
         }
-        console.log(event.data);
-        webSocket.send("idk :sob:");
+        webSocket.send("Got data from websocket!");
     };
+}
+
+function connectionStarter() {
+    const connectionTimer = setInterval(async () => {
+        const response = await fetch("http://localhost:9494/ping", {});
+        if (await response.text() === "pong") {
+            console.log(response);
+            clearInterval(connectionTimer);
+            console.log("meep");
+            webSocketHandler();
+            // server is running and responding as expeceted
+        }
+        console.log("I hate being sick :(");
+        return;
+    }, 2000);
+}
+
+function main() {
+    // const headers = new Headers();
+    connectionStarter();
 }
 
 export default definePlugin({
     name: "WatchRPC",
-    description: "This plugin is absolutely epic",
+    description: "Helper for WatchRPC Desktop app",
     authors: [
         {
             id: 877743969503682612n,
@@ -100,7 +128,7 @@ export default definePlugin({
     ],
     patches: [],
     // Delete these two below if you are only using code patches
-    start() { main(); },
+    start() { connectionStarter(); },
     stop() {
         FluxDispatcher.dispatch({
             type: "LOCAL_ACTIVITY_UPDATE",
