@@ -6,7 +6,7 @@
 
 import definePlugin from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
-import { Devs } from "@utils/constants"
+import { Devs } from "@utils/constants";
 
 // copyed from plugin customRPC
 interface ActivityAssets {
