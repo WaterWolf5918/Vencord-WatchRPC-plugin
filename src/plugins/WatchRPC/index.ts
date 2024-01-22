@@ -6,7 +6,7 @@
 
 import definePlugin from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
-
+import { Devs } from "@utils/constants"
 
 // copyed from plugin customRPC
 interface ActivityAssets {
@@ -120,12 +120,7 @@ function main() {
 export default definePlugin({
     name: "WatchRPC",
     description: "Helper for WatchRPC Desktop app",
-    authors: [
-        {
-            id: 877743969503682612n,
-            name: "WaterWolf5918",
-        },
-    ],
+    authors: [Devs.WaterWolf],
     patches: [],
     // Delete these two below if you are only using code patches
     start() { connectionStarter(); },
