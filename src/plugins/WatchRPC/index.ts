@@ -1,12 +1,12 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher } from "@webpack/common";
-import { Devs } from "@utils/constants";
 
 // copyed from plugin customRPC
 interface ActivityAssets {
