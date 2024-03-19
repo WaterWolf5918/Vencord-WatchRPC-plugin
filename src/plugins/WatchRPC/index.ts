@@ -50,6 +50,7 @@ const enum TimestampMode {
     CUSTOM,
 }
 
+let connectionTimer;
 
 async function getApplicationAsset(key: string): Promise<string> {
     if (/https?:\/\/(cdn|media)\.discordapp\.(com|net)\/attachments\//.test(key)) return "mp:" + key.replace(/https?:\/\/(cdn|media)\.discordapp\.(com|net)\//, "");
@@ -98,7 +99,9 @@ function webSocketHandler() {
 }
 
 function connectionStarter() {
-    const connectionTimer = setInterval(async () => {
+    clearInterval(connectionTimer);
+    // clear the timer encase its running idk why it would be but fuck it
+    connectionTimer = setInterval(async () => {
         const response = await fetch("http://localhost:9494/ping", {});
         if (await response.text() === "pong") {
             console.log(response);
@@ -107,7 +110,7 @@ function connectionStarter() {
             webSocketHandler();
             // server is running and responding as expeceted
         }
-        console.log("I hate being sick :(");
+        // console.log("I hate being sick :(");
         return;
     }, 2000);
 }
@@ -130,5 +133,7 @@ export default definePlugin({
             activity: null,
             socketId: "CustomRPC",
         });
+        // encase its still running
+        clearInterval(connectionTimer);
     },
 });
