@@ -114,8 +114,7 @@ export default definePlugin({
     },
 
     roleGroupColor: ErrorBoundary.wrap(({ id, count, title, guildId, label }: { id: string; count: number; title: string; guildId: string; label: string; }) => {
-        const guild = GuildStore.getGuild(guildId);
-        const role = guild?.roles[id];
+        const role = GuildStore.getRole(guildId, id);
 
         return (
             <span style={{
